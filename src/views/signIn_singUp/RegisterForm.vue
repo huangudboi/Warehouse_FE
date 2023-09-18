@@ -9,6 +9,18 @@
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import { Icon } from '@iconify/vue'
+import { useAuthStore } from '@/stores/auth';
+const { register } = useAuthStore()
+
+const submit = (abc) => {
+  register ({
+    fullName: abc.fullName,
+    userName: abc.userName,
+    email: abc.email,
+    password: abc.passWord,
+    rePassword: abc.rePassWord, 
+  })
+}
 
 //Giá trị các ô input khi người dùng nhập
 const formData = ref({
@@ -38,8 +50,8 @@ const validateName = () => {
   let errorName = ''
   if (!nameValue) {
     errorName = 'Fullname is required'
-  }else if (!/^[a-zA-Z0-9]+$/.test(nameValue)){
-    errorName = "Name can't contain special character"
+  }else if (!/^[a-zA-Z]+$/.test(nameValue)){
+    errorName = "Only contain lowercase and uppercase"
   } else {
     errorName = ''
   }
@@ -51,8 +63,8 @@ const validateUser = () => {
   let errorUser = ''
   if (!userValue) {
     errorUser = 'Username is required'
-  } else if (userValue.length < 10) {
-    errorUser = 'User haves at least 10 characters'
+  } else if (userValue.length < 7) {
+    errorUser = 'User haves at least 7 characters'
   } else {
     errorUser = ''
   }
@@ -147,6 +159,7 @@ const checkRegister = () => {
     }
   })
   if (isValidated) {
+    submit(formData.value)
     console.log('checkRegister') // Chạy hàm Login check register Account
   } else {
     console.log('you have to complete validate')

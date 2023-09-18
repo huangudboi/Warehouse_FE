@@ -1,4 +1,4 @@
-import { LIST_API_NOT_AUTHENTICATE, API } from './list-api'
+import { LIST_API_NOT_AUTHENTICATE } from './list-api'
 import { getLocalStorageByItem } from '@/constants/utils'
 import { useModalStore } from '@/stores/modal'
 import { useLoadingStore } from '@/stores/loading'
@@ -15,9 +15,9 @@ function setup(instance) {
         }
 
         //config export file xlsx
-        if (config?.url === API.CREATELABEL) {
-          config.responseType = 'arraybuffer'
-        }
+        // if (config?.url === API.CREATELABEL) {
+        //   config.responseType = 'arraybuffer'
+        // }
         //end config export file xlsx
       }
 
@@ -58,6 +58,7 @@ function checkToken(instance) {
       }
     },
     (error) => {
+      console.log('error: ', error)
       const { openModal } = useModalStore()
       const { setLoading } = useLoadingStore()
       setLoading(false)

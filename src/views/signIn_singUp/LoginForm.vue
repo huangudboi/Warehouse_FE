@@ -2,6 +2,16 @@
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import { Icon } from '@iconify/vue'
+import { useAuthStore } from '@/stores/auth';
+const { login } = useAuthStore()
+
+const submit = (abc) => {
+  login ({
+    userName: abc.userName,
+    password: abc.passWord,
+    wareHouseCode: abc.wareHouseCode
+  })
+}
 
 //Giá trị các ô input khi người dùng nhập
 const formData = ref({
@@ -27,8 +37,8 @@ const validateUser = () => {
   let errorUser = ''
   if (!userValue) {
     errorUser = 'Username is required'
-  } else if (userValue.length < 10) {
-    errorUser = 'User haves at least 10 characters'
+  } else if (userValue.length < 7) {
+    errorUser = 'User haves at least 7 characters'
   } else {
     errorUser = ''
   }
@@ -91,6 +101,7 @@ const checkAccount = () => {
     }
   })
   if (isValidated) {
+    submit(formData.value),
     console.log('checkLogin') // Chạy hàm Login check Account
   } else {
     console.log('you have to complete validate')
