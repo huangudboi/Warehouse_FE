@@ -1,6 +1,5 @@
 <template>
-    <!-- <div class="overlay" v-if="isLoading"> -->
-    <div class="overlay">
+    <div class="overlay" v-if="isLoading">
         <!-- <div class="loading">
             <div class="img">
                 <LoadingLogo class="loading-icon" />

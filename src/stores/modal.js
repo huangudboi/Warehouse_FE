@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { MODAL_TYPE } from '@/constants'
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 const defaultState = {
   open: false,
   type: MODAL_TYPE.INFO,

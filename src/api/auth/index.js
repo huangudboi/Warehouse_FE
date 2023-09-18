@@ -5,8 +5,8 @@ const loginAPI = async (params) => {
   return await request.post(API.LOGIN, params)
 }
 
-const RegisterAPI = async (params) => {
+const registerAPI = async (params) => {
   return await request.post(API.REGISTER, params)
 }
 
-export { loginAPI, RegisterAPI }
+export { loginAPI, registerAPI }
