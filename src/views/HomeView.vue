@@ -1,23 +1,11 @@
 <script setup>
-  // import { RouterLink, RouterView } from 'vue-router'  
 </script>
 
 <template>
-  <!-- <header class="background">
-    <nav class="nav-routes">
-      <RouterLink to="/">Home</RouterLink>
-      <RouterLink to="/about">About</RouterLink>
-      <RouterLink to="/login">Login</RouterLink>
-    </nav>
-  </header>
-  <RouterView /> -->
-  <div >
-    <h1>This is Home Page</h1>
-  </div>
+  home view
 </template>
 
 <style scoped>
-
 .background {
   background-color: rgb(231, 204, 204);
   width: 100%;

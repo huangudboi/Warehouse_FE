@@ -1,5 +1,23 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
+import { onMounted } from 'vue';
+import BaseModal from '@/components/BaseModal.vue'
+import BaseLoading from '@/components/BaseLoading.vue'
+const { login } = useAuthStore()
+
+const submit = () => {
+  login({
+    userName: 'vuongpq1',
+    password: '12345678',
+    wareHouseCode: 'Zy00'
+  })
+}
+onMounted(() => {
+  submit()
+})
+
+
 </script>
 
 <template>
@@ -11,6 +29,8 @@ import { RouterLink, RouterView } from 'vue-router'
     </nav>
   </header>
   <RouterView />
+  <BaseLoading />
+  <BaseModal />
 </template>
 
 <style scoped>
@@ -21,5 +41,4 @@ import { RouterLink, RouterView } from 'vue-router'
   margin-right: 20px;
   color: white;
 }
-
 </style>
