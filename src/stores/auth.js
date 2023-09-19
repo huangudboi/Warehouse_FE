@@ -7,8 +7,8 @@ import { MODAL_TYPE } from '@/constants'
 import { useModalStore } from './modal'
 
 const defaultState = {
-  userName: null,
-  fullName: null
+  userName: '',
+  fullName: ''
   
 }
 export const useAuthStore = defineStore('auth', () => {
@@ -17,7 +17,6 @@ export const useAuthStore = defineStore('auth', () => {
   //Hàm checklogin
   const login = async (params) => {
     const response = await loginAPI(params)
-    console.log("logined",response)
     if (response?.success||response.status===1) {
       dataUser.value = { ...dataUser.value, ...response.data }
       setLocalStorageByItem('USER_LOGIN', response.data)
@@ -25,7 +24,7 @@ export const useAuthStore = defineStore('auth', () => {
         open: true,
         type: MODAL_TYPE.SUCCESS,
         title: 'Success',
-        content: 'Login success',
+        content: 'Login successful.',
         okText: 'OK'
       })
       router.replace('/')
@@ -37,14 +36,13 @@ export const useAuthStore = defineStore('auth', () => {
   const register = async (params) => {
     const {openModal} = useModalStore()
     const response = await registerAPI(params)
-    console.log("registered",response)
     if (response?.success||response.status===1) {
       dataUser.value = { ...dataUser.value, ...response.data }
       openModal({
         open: true,
         type: MODAL_TYPE.SUCCESS,
         title: 'Success',
-        content: 'Register success',
+        content: 'Register successfull -> Go to register.',
         okText: 'OK'
       })
       router.replace('/login')

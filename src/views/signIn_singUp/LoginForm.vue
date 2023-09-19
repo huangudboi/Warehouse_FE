@@ -5,11 +5,11 @@ import { Icon } from '@iconify/vue'
 import { useAuthStore } from '@/stores/auth';
 const { login } = useAuthStore()
 
-const submit = (abc) => {
+const submit = (formData) => {
   login ({
-    userName: abc.userName,
-    password: abc.passWord,
-    wareHouseCode: abc.wareHouseCode
+    userName: formData.value.userName,
+    password: formData.value.passWord,
+    wareHouseCode: formData.value.wareHouseCode
   })
 }
 
@@ -101,7 +101,7 @@ const checkAccount = () => {
     }
   })
   if (isValidated) {
-    submit(formData.value),
+    submit(formData),
     console.log('checkLogin') // Chạy hàm Login check Account
   } else {
     console.log('you have to complete validate')
