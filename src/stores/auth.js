@@ -8,9 +8,10 @@ import { useModalStore } from './modal'
 
 const defaultState = {
   userName: '',
-  fullName: ''
-  
+  wareHouseCode: '',
+  token: ''
 }
+
 export const useAuthStore = defineStore('auth', () => {
   const {openModal} = useModalStore()
   const dataUser = ref({ ...defaultState })

@@ -9,4 +9,4 @@ const registerAPI = async (params) => {
   return await request.post(API.REGISTER, params)
 }
 
-export { loginAPI, registerAPI }
+export { loginAPI, registerAPI}

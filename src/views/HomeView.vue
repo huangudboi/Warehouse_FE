@@ -15,9 +15,9 @@ const {dataUser} = useAuthStore()
         <h2 class="nameheader">Kho hàng QHLD</h2>
       </div>
       <div class="router">
-        <button>Báo cáo thống kê</button>
-        <button>Quản lý đơn hàng</button>
-        <button>Thêm mới đơn hàng</button>
+        <RouterLink class="report button" to="/report">Báo cáo thống kê</RouterLink>
+        <RouterLink class="management button" to="/management">Quản lý đơn hàng</RouterLink>
+        <RouterLink class="createNew button" to="/createNew">Thêm mới đơn hàng</RouterLink>
       </div>
       <div class="account">
         <div class="username">{{ dataUser.fullName }}</div>
@@ -110,7 +110,7 @@ const {dataUser} = useAuthStore()
   .nameheader:hover {
     color: rgb(253, 253, 253);
   }
-  .router >button{
+  .button{
     background-color: rgba(0, 0, 0, 0.37);
     color: white;
     height: max-content;
@@ -119,8 +119,10 @@ const {dataUser} = useAuthStore()
     border: none;
     margin-right: 10px;
     font-size: 15px;
+    font-weight: bold;
+    text-decoration: none;
   }
-  .router >button:hover{
+  .button:hover{
     background: none;
     color: black;
   }
