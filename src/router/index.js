@@ -39,16 +39,16 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: FormView,
-      props: {isLoginScreen: true},
-      meta:{requiresAuth: true},
+      props: { isLoginScreen: true },
+      meta: { requiresAuth: true }
     },
     {
       path: '/register',
       name: 'register',
       component: FormView,
-      props: {isLoginScreen: false},
-      meta:{requiresAuth: true},
-    },
+      props: { isLoginScreen: false },
+      meta: { requiresAuth: true }
+    }
   ]
 })
 

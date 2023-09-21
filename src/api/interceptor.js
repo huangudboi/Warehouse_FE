@@ -58,7 +58,6 @@ function checkToken(instance) {
       }
     },
     (error) => {
-      console.log('error: ', error)
       const { openModal } = useModalStore()
       const { setLoading } = useLoadingStore()
       setLoading(false)
