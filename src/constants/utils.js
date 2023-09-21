@@ -15,5 +15,9 @@ export function getLocalStorageByItem(name) {
   return false
 }
 
+export function removeLocalStorageByItem(name) {
+  localStorage.removeItem(name)
+}
+
 
 

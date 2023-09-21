@@ -1,9 +1,9 @@
 <script setup>
 import { Icon } from '@iconify/vue';
-import {useAuthStore} from '@/stores/auth'
 import { RouterLink } from 'vue-router';
+import { getLocalStorageByItem, removeLocalStorageByItem } from '@/constants/utils'
 
-const {dataUser} = useAuthStore()
+const dataUser = getLocalStorageByItem('USER_LOGIN')
 
 </script>
 
@@ -21,7 +21,7 @@ const {dataUser} = useAuthStore()
       </div>
       <div class="account">
         <div class="username">{{ dataUser.fullName }}</div>
-        <RouterLink class="logout" to="/login">
+        <RouterLink class="logout" to="/login" @click="removeLocalStorageByItem('USER_LOGIN')">
           <div>Logout</div>
           <Icon icon="uil:signout" />
         </RouterLink>
