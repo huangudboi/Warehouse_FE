@@ -12,5 +12,4 @@ import BaseLoading from '@/components/BaseLoading.vue'
 </template>
 
 <style scoped>
-
 </style>
