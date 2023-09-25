@@ -1,11 +1,11 @@
 <script setup>
 import { ref } from 'vue'
-import { Icon } from '@iconify/vue';
-import { useNewOrderStore } from '@/stores/neworder'
+import { Icon } from '@iconify/vue'
+import { useOrderStore } from '@/stores/handleorder'
 
-const { addnew } = useNewOrderStore()
+const { addnew } = useOrderStore()
 const submit = (formData) => {
-  addnew ({
+  addnew({
     supplierName: formData.value.nameSender,
     supplierPhoneNumber: formData.value.phoneSender,
     supplierAddress: formData.value.addressSender,
@@ -15,7 +15,7 @@ const submit = (formData) => {
     recipientAddress: formData.value.addressReceiver,
     recipientEmail: formData.value.emailReceiver,
     recipientLongitude: formData.value.longitude,
-    recipientLatitude: formData.value.latitude,
+    recipientLatitude: formData.value.latitude
   })
 }
 //Giá trị các ô input khi người dùng nhập
@@ -29,7 +29,7 @@ const formData = ref({
   addressReceiver: '',
   emailReceiver: '',
   longitude: '',
-  latitude: '',
+  latitude: ''
 })
 //Giá trị các ô input Receiver lỗi
 const formError = ref({
@@ -42,7 +42,7 @@ const formError = ref({
   addressReceiver: '',
   emailReceiver: '',
   longitude: '',
-  latitude: '',
+  latitude: ''
 })
 
 //Hàm @input cho mỗi ô input, khi nhập thì sẽ tắt validate lỗi.
@@ -68,9 +68,9 @@ const validatePhone1 = () => {
   let errorPhone = ''
   if (!phone1) {
     errorPhone = 'Phone is required'
-  }else if(!/[0-9]/.test(phone1)){
+  } else if (!/[0-9]/.test(phone1)) {
     errorPhone = 'Phone only contains number'
-  }else if(phone1.length < 10){
+  } else if (phone1.length < 10) {
     errorPhone = 'Phone haves minimum 10 numbers'
   } else {
     errorPhone = ''
@@ -95,7 +95,7 @@ const validateEmail1 = () => {
   let mailFormat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
   if (!email1) {
     errorEmail = 'Email is required'
-  }else if(!mailFormat.test(email1)) {
+  } else if (!mailFormat.test(email1)) {
     errorEmail = 'Email must be correct format ...@...'
   } else {
     errorEmail = ''
@@ -122,9 +122,9 @@ const validatePhone2 = () => {
   let errorPhone = ''
   if (!phone2) {
     errorPhone = 'Phone is required'
-  }else if(!/[0-9]/.test(phone2)){
+  } else if (!/[0-9]/.test(phone2)) {
     errorPhone = 'Phone only contains number'
-  }else if(phone2.length < 10){
+  } else if (phone2.length < 10) {
     errorPhone = 'Phone haves minimum 10 numbers'
   } else {
     errorPhone = ''
@@ -149,7 +149,7 @@ const validateEmail2 = () => {
   let mailFormat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
   if (!email2) {
     errorEmail = 'Email is required'
-  }else if(!mailFormat.test(email2)) {
+  } else if (!mailFormat.test(email2)) {
     errorEmail = 'Email must be correct format ...@...'
   } else {
     errorEmail = ''
@@ -179,7 +179,6 @@ const validateVido = () => {
   formError.value.latitude = errorVido
 }
 
-
 //Object này chứa các hàm validate của các trường
 const validateRules = {
   nameSender: { validator: validateName1 },
@@ -190,8 +189,8 @@ const validateRules = {
   phoneReceiver: { validator: validatePhone2 },
   addressReceiver: { validator: validateAdr2 },
   emailReceiver: { validator: validateEmail2 },
-  longitude: { validator: validateKinhdo},
-  latitude: { validator: validateVido}
+  longitude: { validator: validateKinhdo },
+  latitude: { validator: validateVido }
 }
 const handleValidate = () => {
   Object.keys(validateRules).forEach((key) => {
@@ -217,188 +216,180 @@ const checkCreate = () => {
     console.log('you have to complete validate')
   }
 }
-
 </script>
 
 <template>
-  <body class="overlay">
-    <div class="header">
-      <RouterLink class="home" to="/">
-        <Icon icon="bi-box-arrow-left" />
-        <div>Quay lại trang chủ</div>
-      </RouterLink>
-      <button class="exel">
-        <div>Tải file lên để thêm mới</div>
-        <Icon icon="material-symbols:upload" width="20" height="20"/>
-      </button>
-    </div>
-    <div class="title">Thêm mới đơn hàng</div>
-    <div class="information">
-      <div class="sender">
-        <header class="name">Nhà cung cấp:</header>
-        <div class="text">
-          <div class="label">Tên NCC</div>
-          <input
-            type="text"
-            id="nameSender"
-            v-model="formData.nameSender"
-            @blur="validateRules.nameSender.validator()"
-            @input="removeValidate('nameSender')"
-            placeholder="Enter fullname"
-          />
-          <div class="form-error" :class="{ active: formError.nameSender }">
-            {{ formError.nameSender }}
-          </div>
-        </div>
-        <div class="text">
-          <div class="label">Số điện thoại NCC</div>
-          <input
-            type="text"
-            id="phoneSender"
-            v-model="formData.phoneSender"
-            @blur="validateRules.phoneSender.validator()"
-            @input="removeValidate('phoneSender')"
-            placeholder="Enter phone"
-          />
-          <div class="form-error" :class="{ active: formError.phoneSender }">
-            {{ formError.phoneSender }}
-          </div>
-        </div>
-        <div class="text">
-          <div class="label">Địa chỉ NCC</div>
-          <input
-            type="text"
-            id="addressSender"
-            v-model="formData.addressSender"
-            @blur="validateRules.addressSender.validator()"
-            @input="removeValidate('addressSender')"
-            placeholder="Enter address"
-          />
-          <div class="form-error" :class="{ active: formError.addressSender }">
-            {{ formError.addressSender }}
-          </div>
-        </div>
-        <div class="text">
-          <div class="label">Email NCC</div>
-          <input
-            type="text"
-            id="emailSender"
-            v-model="formData.emailSender"
-            @blur="validateRules.emailSender.validator()"
-            @input="removeValidate('emailSender')"
-            placeholder="Enter email"
-          />
-          <div class="form-error" :class="{ active: formError.emailSender }">
-            {{ formError.emailSender }}
-          </div>
+  <div class="header">
+    <RouterLink class="home" to="/">
+      <Icon icon="bi-box-arrow-left" />
+      <div>Quay lại trang chủ</div>
+    </RouterLink>
+    <button class="exel">
+      <div>Tải file lên để thêm mới</div>
+      <Icon icon="material-symbols:upload" width="20" height="20" />
+    </button>
+  </div>
+  <div class="title">Thêm mới đơn hàng</div>
+  <div class="information">
+    <div class="sender">
+      <header class="name">Nhà cung cấp:</header>
+      <div class="text">
+        <div class="label">Tên NCC</div>
+        <input
+          type="text"
+          id="nameSender"
+          v-model="formData.nameSender"
+          @blur="validateRules.nameSender.validator()"
+          @input="removeValidate('nameSender')"
+          placeholder="Enter fullname"
+        />
+        <div class="form-error" :class="{ active: formError.nameSender }">
+          {{ formError.nameSender }}
         </div>
       </div>
-      <div class="receiver">
-        <header class="name">Người nhận:</header>
-        <div>
-          <div class="inf">
-            <div class="text">
-              <div class="label">Tên NN</div>
-              <input
-                type="text"
-                id="nameReceiver"
-                v-model="formData.nameReceiver"
-                @blur="validateRules.nameReceiver.validator()"
-                @input="removeValidate('nameReceiver')"
-                placeholder="Enter fullname"
-              />
-              <div class="form-error" :class="{ active: formError.nameReceiver }">
-                {{ formError.nameReceiver }}
-              </div>
-            </div>
-            <div class="text">
-              <div class="label">Số điện thoại NN</div>
-              <input
-                type="text"
-                id="phoneReceiver"
-                v-model="formData.phoneReceiver"
-                @blur="validateRules.phoneReceiver.validator()"
-                @input="removeValidate('phoneReceiver')"
-                placeholder="Enter phone"
-              />
-              <div class="form-error" :class="{ active: formError.phoneReceiver }">
-                {{ formError.phoneReceiver }}
-              </div>
-            </div>
-            <div class="text">
-              <div class="label">Địa chỉ NN</div>
-              <input
-                type="text"
-                id="addressReceiver"
-                v-model="formData.addressReceiver"
-                @blur="validateRules.addressReceiver.validator()"
-                @input="removeValidate('addressReceiver')"
-                placeholder="Enter address"
-              />
-              <div class="form-error" :class="{ active: formError.addressReceiver }">
-                {{ formError.addressReceiver }}
-              </div>
-            </div>
-            <div class="text">
-              <div class="label">Email NN</div>
-              <input
-                type="text"
-                id="emailReceiver"
-                v-model="formData.emailReceiver"
-                @blur="validateRules.emailReceiver.validator()"
-                @input="removeValidate('emailReceiver')"
-                placeholder="Enter email"
-              />
-              <div class="form-error" :class="{ active: formError.emailReceiver }">
-                {{ formError.emailReceiver }}
-              </div>
+      <div class="text">
+        <div class="label">Số điện thoại NCC</div>
+        <input
+          type="text"
+          id="phoneSender"
+          v-model="formData.phoneSender"
+          @blur="validateRules.phoneSender.validator()"
+          @input="removeValidate('phoneSender')"
+          placeholder="Enter phone"
+        />
+        <div class="form-error" :class="{ active: formError.phoneSender }">
+          {{ formError.phoneSender }}
+        </div>
+      </div>
+      <div class="text">
+        <div class="label">Địa chỉ NCC</div>
+        <input
+          type="text"
+          id="addressSender"
+          v-model="formData.addressSender"
+          @blur="validateRules.addressSender.validator()"
+          @input="removeValidate('addressSender')"
+          placeholder="Enter address"
+        />
+        <div class="form-error" :class="{ active: formError.addressSender }">
+          {{ formError.addressSender }}
+        </div>
+      </div>
+      <div class="text">
+        <div class="label">Email NCC</div>
+        <input
+          type="text"
+          id="emailSender"
+          v-model="formData.emailSender"
+          @blur="validateRules.emailSender.validator()"
+          @input="removeValidate('emailSender')"
+          placeholder="Enter email"
+        />
+        <div class="form-error" :class="{ active: formError.emailSender }">
+          {{ formError.emailSender }}
+        </div>
+      </div>
+    </div>
+    <div class="receiver">
+      <header class="name">Người nhận:</header>
+      <div>
+        <div class="inf">
+          <div class="text">
+            <div class="label">Tên NN</div>
+            <input
+              type="text"
+              id="nameReceiver"
+              v-model="formData.nameReceiver"
+              @blur="validateRules.nameReceiver.validator()"
+              @input="removeValidate('nameReceiver')"
+              placeholder="Enter fullname"
+            />
+            <div class="form-error" :class="{ active: formError.nameReceiver }">
+              {{ formError.nameReceiver }}
             </div>
           </div>
-          <div class="Toado">
-            <div class="text">
-              <div class="label">Kinh độ</div>
-              <input
-                type="text"
-                id="longitude"
-                v-model="formData.longitude"
-                @blur="validateRules.longitude.validator()"
-                @input="removeValidate('longitude')"
-                placeholder="Enter longitude"
-              />
-              <div class="form-error" :class="{ active: formError.longitude }">
-                {{ formError.longitude }}
-              </div>
+          <div class="text">
+            <div class="label">Số điện thoại NN</div>
+            <input
+              type="text"
+              id="phoneReceiver"
+              v-model="formData.phoneReceiver"
+              @blur="validateRules.phoneReceiver.validator()"
+              @input="removeValidate('phoneReceiver')"
+              placeholder="Enter phone"
+            />
+            <div class="form-error" :class="{ active: formError.phoneReceiver }">
+              {{ formError.phoneReceiver }}
             </div>
-            <div class="text">
-              <div class="label">Vĩ độ</div>
-              <input
-                type="text"
-                id="latitude"
-                v-model="formData.latitude"
-                @blur="validateRules.latitude.validator()"
-                @input="removeValidate('latitude')"
-                placeholder="Enter latitude"
-              />
-              <div class="form-error" :class="{ active: formError.latitude }">
-                {{ formError.latitude }}
-              </div>
-            </div>   
+          </div>
+          <div class="text">
+            <div class="label">Địa chỉ NN</div>
+            <input
+              type="text"
+              id="addressReceiver"
+              v-model="formData.addressReceiver"
+              @blur="validateRules.addressReceiver.validator()"
+              @input="removeValidate('addressReceiver')"
+              placeholder="Enter address"
+            />
+            <div class="form-error" :class="{ active: formError.addressReceiver }">
+              {{ formError.addressReceiver }}
+            </div>
+          </div>
+          <div class="text">
+            <div class="label">Email NN</div>
+            <input
+              type="text"
+              id="emailReceiver"
+              v-model="formData.emailReceiver"
+              @blur="validateRules.emailReceiver.validator()"
+              @input="removeValidate('emailReceiver')"
+              placeholder="Enter email"
+            />
+            <div class="form-error" :class="{ active: formError.emailReceiver }">
+              {{ formError.emailReceiver }}
+            </div>
+          </div>
+        </div>
+        <div class="Toado">
+          <div class="text">
+            <div class="label">Kinh độ</div>
+            <input
+              type="text"
+              id="longitude"
+              v-model="formData.longitude"
+              @blur="validateRules.longitude.validator()"
+              @input="removeValidate('longitude')"
+              placeholder="Enter longitude"
+            />
+            <div class="form-error" :class="{ active: formError.longitude }">
+              {{ formError.longitude }}
+            </div>
+          </div>
+          <div class="text">
+            <div class="label">Vĩ độ</div>
+            <input
+              type="text"
+              id="latitude"
+              v-model="formData.latitude"
+              @blur="validateRules.latitude.validator()"
+              @input="removeValidate('latitude')"
+              placeholder="Enter latitude"
+            />
+            <div class="form-error" :class="{ active: formError.latitude }">
+              {{ formError.latitude }}
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="button">
-      <button @click="checkCreate()">Thêm mới</button>
-    </div>
-  </body>
-
+  </div>
+  <div class="button">
+    <button @click="checkCreate()">Thêm mới</button>
+  </div>
 </template>
 
 <style lang="scss" scoped>
-.overlay {
-  background-color: rgb(233,225,208);
-  color: black;
-}
 .home {
   display: flex;
   align-items: center;
@@ -446,20 +437,23 @@ const checkCreate = () => {
   position: relative;
   margin-bottom: 12px;
 }
-.button >button{
+.button > button {
   padding: 16px 70px;
   cursor: pointer;
   border-radius: 20px;
   font-size: 20px;
   margin-top: 35px;
-  margin-bottom: 0px;
   font-weight: bold;
   background-color: orange;
+}
+.button > button:hover {
+  background-color: rgb(188, 143, 51);
 }
 .button {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-bottom: 36px;
 }
 .label {
   margin: 10px 0 0px;
@@ -482,7 +476,7 @@ const checkCreate = () => {
   }
 }
 
-.receiver >div{
+.receiver > div {
   display: flex;
   gap: 30px;
 }
@@ -492,13 +486,13 @@ const checkCreate = () => {
   position: absolute;
 }
 
-.exel{
-  color: black;
+.exel {
+  color: white;
   cursor: pointer;
   font-weight: 700;
   font-size: 10pt;
   border-width: 1px;
-  background-color: orange;
+  background-color: rgb(197, 142, 40);
   border-radius: 3px;
   padding: 8px 10px;
   display: flex;
@@ -506,5 +500,7 @@ const checkCreate = () => {
   gap: 5px;
   margin-right: 25px;
 }
-
+.exel:hover {
+  background-color: rgb(85, 56, 2);
+}
 </style>
