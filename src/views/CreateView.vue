@@ -2,6 +2,10 @@
 import { ref } from 'vue'
 import { Icon } from '@iconify/vue'
 import { useOrderStore } from '@/stores/handleorder'
+import { useModalStore } from '@/stores/modal'
+import { MODAL_TYPE } from '@/constants'
+
+const { openModal } = useModalStore()
 
 const { addnew } = useOrderStore()
 const submit = (formData) => {
@@ -211,9 +215,14 @@ const checkCreate = () => {
   })
   if (isValidated) {
     submit(formData)
-    console.log('check') // Chạy hàm check
   } else {
-    console.log('you have to complete validate')
+    openModal({
+      open: true,
+      type: MODAL_TYPE.ERROR,
+      title: 'Error',
+      content: 'Cần nhập đúng định dạng form trước khi click Thêm mới.',
+      okText: 'OK'
+    })
   }
 }
 </script>

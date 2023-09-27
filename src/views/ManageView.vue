@@ -5,8 +5,16 @@ import { RouterLink } from 'vue-router'
 import { searchAPI } from '@/api/search'
 import { useDetailStore } from '@/stores/detail'
 import { useOrderStore } from '@/stores/handleorder'
+import { createLabelAPI } from '@/api/report/index'
+import { useModalStore } from '@/stores/modal'
+import { MODAL_TYPE } from '@/constants'
+
+const {openModal} = useModalStore()
 
 const { getData } = useDetailStore()
+const detail = (id) => {
+  getData (id)
+}
 
 const datas = ref([])
 const datasRender = ref([])
@@ -34,6 +42,7 @@ const searchData = async () => {
   const result = await searchAPI()
   datas.value = result.content
   datasRender.value = result.content
+  datasRender.value.map((item) => ({ ...item, checked: false }))
   sumPage.value = Math.ceil(datas.value.length / sizePage.value)
 }
 searchData()
@@ -103,6 +112,65 @@ const toggleSearchOrder = () => {
     sumPage.value = Math.round(datasRender.value.length / sizePage.value)
   else sumPage.value = 1
 }
+
+const listExport = ref([])
+const params = ref({
+  listOrderCode: [],
+})
+const clickExport = async () => {
+  listExport.value = datasRender.value.filter(item => item.checked)
+  if(listExport.value.length === 0){
+    openModal({
+      open: true,
+      type: MODAL_TYPE.ERROR,
+      title: 'Error',
+      content: 'Chưa có đơn hàng nào được chọn.',
+      okText: 'OK'
+    })
+  }else{
+    for(let i=0 ; i<listExport.value.length ; i++){
+      params.value.listOrderCode[i] = listExport.value[i].orderCode
+    }
+    const response = await createLabelAPI(params.value)
+    if (response) {
+      //file name
+      let today = new Date()
+      let year = today.getFullYear()
+      let month = today.getMonth() + 1
+      let day = today.getDate()
+      if (month < 10) {
+        month = '0' + month
+      }
+      if (day < 10) {
+        day = '0' + day
+      }
+      let formattedDate = year + '' + month + '' + day
+      let filename = `FileLabel_${formattedDate}.xlsx`
+
+      //download file
+      const blob = new Blob([response])
+      const link = document.createElement('a')
+      link.style.display = 'none'
+      link.href = window.URL.createObjectURL(blob)
+      link.download = filename
+      link.click()
+      window.URL.revokeObjectURL(link.href)
+
+      openModal({
+        open: true,
+        type: MODAL_TYPE.SUCCESS,
+        title: 'Success',
+        content: 'Tải label đơn hàng thành công.',
+        okText: 'OK'
+      })
+    }
+  }
+  datasRender.value.forEach((element) => {
+    if (element.checked === true) {
+      element.checked = false
+    }
+  })
+}
 </script>
 
 <template>
@@ -112,7 +180,7 @@ const toggleSearchOrder = () => {
       <div>Quay lại trang chủ</div>
     </RouterLink>
     <div>
-      <button class="btn">Xuất mã đơn hàng</button>
+      <button class="btn" @click="clickExport()">Xuất mã đơn hàng</button>
       <button class="btn">Điều phối đơn hàng</button>
       <button class="btn">Xóa các đơn hàng đã chọn</button>
     </div>
@@ -181,7 +249,7 @@ const toggleSearchOrder = () => {
           <td class="data">{{ data.recipientName }}</td>
           <td class="data">{{ data.recipientPhone }}</td>
           <td class="data">
-            <RouterLink class="btn_show detailOrder" to="/detailOrder" @click="getData(data)"
+            <RouterLink class="btn_show detailOrder" to="/detailOrder" @click="detail(data.orderCode)"
               >Chi tiết</RouterLink
             >
             <button id="data.orderCode" class="btn_delete" @click="deteleData(data.orderCode)">
@@ -194,6 +262,7 @@ const toggleSearchOrder = () => {
               class="getOrderCode"
               value="${data.orderCode}"
               :disabled="data.status === 0"
+              v-model="data.checked"
             />
           </td>
         </tr>

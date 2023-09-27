@@ -3,6 +3,7 @@ import { getLocalStorageByItem } from '@/constants/utils'
 import { useModalStore } from '@/stores/modal'
 import { useLoadingStore } from '@/stores/loading'
 import { MODAL_TYPE } from '@/constants'
+import { API } from './list-api'
 function setup(instance) {
   instance.interceptors.request.use(
     function (config) {
@@ -15,9 +16,9 @@ function setup(instance) {
         }
 
         //config export file xlsx
-        // if (config?.url === API.CREATELABEL) {
-        //   config.responseType = 'arraybuffer'
-        // }
+        if (config?.url === API.LABEL || config?.url === API.NUMBERORDER || config?.url === API.EFFICIENCY) {
+          config.responseType = 'arraybuffer'
+        }
         //end config export file xlsx
       }
 

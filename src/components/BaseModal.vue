@@ -76,7 +76,7 @@ const onCancel = () => {
     width: 100%;
     height: 100%;
     z-index: 9999;
-    background-color: rgba($color: #000000, $alpha: 0.3);
+    background-color: rgba($color: #000000, $alpha: 0.6);
     animation: opacityFadeIn forwards 0.5s ease-in-out;
 }
 

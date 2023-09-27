@@ -1,16 +1,20 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { detailAPI } from '@/api/order/index'
 
 const defaultState = {
-    orderCode: '',
-    fullName: '',
-    status: ''
+
 }
 
 export const useDetailStore = defineStore('detail', () => {
-    const dataDetail = ref({ ...defaultState })
-    const getData = (params) => {
-      dataDetail.value = { ...dataDetail.value, ...params }
+  const dataDetail = ref({ ...defaultState })
+  const getData = async (params) => {
+    const response = await detailAPI(params)
+    if (response.status == 1) {
+      dataDetail.value = { ...dataDetail.value, ...response.data }
+      return response
     }
-    return { dataDetail, getData}
+    return null
+  }
+  return { getData, dataDetail}
 })

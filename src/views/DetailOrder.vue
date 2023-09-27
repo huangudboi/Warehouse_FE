@@ -3,10 +3,12 @@ import { Icon } from '@iconify/vue'
 import { useDetailStore } from '@/stores/detail'
 import ModalConfirm from '@/components/ModalConfirm.vue'
 import useModalCfStore from '@/stores/confirmmodal'
+import { storeToRefs } from 'pinia'
 
 const { click } = useModalCfStore()
 
-const { dataDetail } = useDetailStore()
+const store = useDetailStore()
+const { dataDetail } = storeToRefs(store)
 const formDate = (date) => {
   return new Date(date).toLocaleString('en-GB')
 }
@@ -30,7 +32,7 @@ const statusString = (status) => {
       <button
         class="btn"
         @click="click(true)"
-        :disabled= "dataDetail.status === 2 || dataDetail.status === 3"
+        v-show= "dataDetail.orderStatus !== 2 && dataDetail.orderStatus !== 3 && dataDetail.orderStatus !== 4"
       >
         Xác nhận đơn hàng
       </button>
@@ -46,11 +48,11 @@ const statusString = (status) => {
         </tr>
         <tr>
           <th class="field">Ngày tạo đơn</th>
-          <td class="data">{{ formDate(dataDetail.createdTime) }}</td>
+          <td class="data">{{ formDate(dataDetail.createdDate) }}</td>
         </tr>
         <tr>
           <th class="field">Trạng thái</th>
-          <td class="data">{{ statusString(dataDetail.status) }}</td>
+          <td class="data">{{ statusString(dataDetail.orderStatus) }}</td>
         </tr>
       </tbody>
       <caption class="my-caption">
@@ -66,15 +68,15 @@ const statusString = (status) => {
       <tbody id="order">
         <tr>
           <th class="field">Mã kho</th>
-          <td class="data">{{ dataDetail.wareHouse?.wareHouseCode || null }}</td>
+          <td class="data">{{ dataDetail?.warehouseCode || null }}</td>
         </tr>
         <tr>
           <th class="field">Tên kho</th>
-          <td class="data">{{ dataDetail.wareHouse?.name || null }}</td>
+          <td class="data">{{ dataDetail?.warehouseName || null }}</td>
         </tr>
         <tr>
           <th class="field">Địa chỉ kho</th>
-          <td class="data">{{ dataDetail.wareHouse?.address || null }}</td>
+          <td class="data">{{ dataDetail?.address || null }}</td>
         </tr>
         <tr>
           <th class="field">Ngày lưu kho</th>
@@ -89,19 +91,19 @@ const statusString = (status) => {
       <tbody id="order">
         <tr>
           <th class="field">Tên NCC</th>
-          <td class="data">{{ dataDetail.supplier.name }}</td>
+          <td class="data">{{ dataDetail.supplierName }}</td>
         </tr>
         <tr>
           <th class="field">Địa chỉ NCC</th>
-          <td class="data">{{ dataDetail.supplier.address }}</td>
+          <td class="data">{{ dataDetail.supplierAddress }}</td>
         </tr>
         <tr>
           <th class="field">Số điện thoại NCC</th>
-          <td class="data">{{ dataDetail.supplier.phoneNumber }}</td>
+          <td class="data">{{ dataDetail.supplierPhoneNumber }}</td>
         </tr>
         <tr>
           <th class="field">Email</th>
-          <td class="data">{{ dataDetail.supplier.email }}</td>
+          <td class="data">{{ dataDetail.supplierEmail }}</td>
         </tr>
       </tbody>
     </table>
@@ -131,23 +133,21 @@ const statusString = (status) => {
   </div>
   <div class="tableHistory">
     <table class="table">
-      <thead>
-        <caption class="my-caption">
-          Lịch sử đơn hàng
-        </caption>
-      </thead>
+      <caption class="my-caption">
+        Lịch sử đơn hàng
+      </caption>
       <thead>
         <tr>
           <th class="field">Thời gian</th>
           <th class="field">Trạng thái đơn hàng</th>
-          <th class="field">Lý do</th>
+          <th class="field" style="width: 300px;">Lý do</th>
         </tr>
       </thead>
       <tbody id="history">
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
+        <tr v-for="history in dataDetail.orderHistoryList" :key="history.id">
+          <td class="data">{{ formDate(history.createdDate) }}</td>
+          <td class="data">{{ statusString(history.orderStatus) }}</td>
+          <td class="data">{{ history.missReason?.name || null }}</td>
         </tr>
       </tbody>
     </table>

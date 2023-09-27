@@ -3,6 +3,11 @@ import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import { Icon } from '@iconify/vue'
 import { useAuthStore } from '@/stores/auth';
+import { useModalStore } from '@/stores/modal'
+import { MODAL_TYPE } from '@/constants'
+
+const { openModal } = useModalStore()
+
 const { login } = useAuthStore()
 
 const submit = (formData) => {
@@ -101,10 +106,15 @@ const checkAccount = () => {
     }
   })
   if (isValidated) {
-    submit(formData),
-    console.log('checkLogin') // Chạy hàm Login check Account
-  } else {
-    console.log('you have to complete validate')
+    submit(formData)
+  }else{
+    openModal({
+      open: true,
+      type: MODAL_TYPE.ERROR,
+      title: 'Error',
+      content: 'Cần nhập đúng định dạng form trước khi click Login.',
+      okText: 'OK'
+    })
   }
 }
 </script>
