@@ -23,7 +23,7 @@ export const useOrderStore = defineStore('neworder', () => {
                 open: true,
                 type: MODAL_TYPE.SUCCESS,
                 title: 'Success',
-                content: 'Added new order successfully.',
+                content: 'Thêm mới đơn hàng thành công.',
                 okText: 'OK'
             })
             return response
@@ -37,7 +37,7 @@ export const useOrderStore = defineStore('neworder', () => {
             open: true,
             type: MODAL_TYPE.SUCCESS,
             title: 'Success',
-            content: `Delete order code:${params} successfully.`,
+            content: `Xóa đơn hàng mã:${params} thành công.`,
             okText: 'OK'
         })
         return response
@@ -50,7 +50,7 @@ export const useOrderStore = defineStore('neworder', () => {
                 open: true,
                 type: MODAL_TYPE.ERROR,
                 title: 'Fail',
-                content: `Change status order code:${params.orderCode} to deliveryFail`,
+                content: `Thay đổi trạng thái đơn hàng mã:${params.orderCode} thành công.`,
                 okText: 'OK'
             })
         }
@@ -59,7 +59,7 @@ export const useOrderStore = defineStore('neworder', () => {
                 open: true,
                 type: MODAL_TYPE.SUCCESS,
                 title: 'Success',
-                content: `Change status order code:${params.orderCode} to deliverySuccess`,
+                content: `Thay đổi trạng thái đơn hàng mã:${params.orderCode} thành công.`,
                 okText: 'OK'
             })
         }

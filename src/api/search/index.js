@@ -5,4 +5,8 @@ const searchAPI = async() => {
   return await request.get(API.SEARCH)
 }
 
-export { searchAPI }
+const getWareHouseAPI = async() => {
+  return await request.get(API.WAREHOUSE)
+}
+
+export { searchAPI, getWareHouseAPI }

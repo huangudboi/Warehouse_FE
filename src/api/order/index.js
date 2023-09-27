@@ -9,10 +9,14 @@ const deleteOrderAPI = async (params) => {
   return await request.delete(`${API.DELETE}/${params}`)
 }
 
+const detailAPI = async (params) => {
+  return await request.get(`${API.DETAIL}?orderCode=${params}`)
+}
+
 const changeStatusAPI = async (params) => {
   return await request.put(
     `${API.STATUS}?orderCode=${params.orderCode}&type=${params.type}&missReasonId=${params.missReasonId}`
   )
 }
 
-export { addNewAPI, deleteOrderAPI, changeStatusAPI }
+export { addNewAPI, deleteOrderAPI, detailAPI, changeStatusAPI }

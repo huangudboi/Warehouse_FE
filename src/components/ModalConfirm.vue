@@ -5,6 +5,7 @@ import { Icon } from '@iconify/vue'
 import { ref } from 'vue'
 import { useOrderStore } from '@/stores/handleorder'
 import { useDetailStore } from '@/stores/detail'
+const { getData } = useDetailStore()
 
 const { changeOrder } = useOrderStore()
 
@@ -45,13 +46,13 @@ const uncheckAllOrderCodes = () => {
   formData.value.missReasonId = null
   formData.value.type = null
 }
-
 const submit = (formData) => {
   changeOrder({
     orderCode: formData.orderCode,
     type: formData.type,
     missReasonId: formData.missReasonId
   })
+  getData(dataDetail.orderCode)
 }
 </script>
 
@@ -187,6 +188,9 @@ const submit = (formData) => {
   color: white;
   padding: 10px 12px 10px 12px;
 }
+.confirm:hover{
+  background-color: rgb(2, 58, 2);
+}
 .back {
   display: flex;
   background-color: red;
@@ -194,5 +198,8 @@ const submit = (formData) => {
   border-radius: 15px;
   color: white;
   padding: 10px 12px 10px 12px;
+}
+.back:hover{
+  background-color: rgb(74, 2, 2);
 }
 </style>

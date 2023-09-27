@@ -10,6 +10,11 @@ import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import { Icon } from '@iconify/vue'
 import { useAuthStore } from '@/stores/auth';
+import { useModalStore } from '@/stores/modal'
+import { MODAL_TYPE } from '@/constants'
+
+const { openModal } = useModalStore()
+
 const { register } = useAuthStore()
 
 const submit = (abc) => {
@@ -160,9 +165,14 @@ const checkRegister = () => {
   })
   if (isValidated) {
     submit(formData.value)
-    console.log('checkRegister') // Chạy hàm Login check register Account
   } else {
-    console.log('you have to complete validate')
+    openModal({
+      open: true,
+      type: MODAL_TYPE.ERROR,
+      title: 'Error',
+      content: 'Cần nhập đúng định dạng form trước khi click Register.',
+      okText: 'OK'
+    })
   }
 }
 
