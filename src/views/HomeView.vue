@@ -2,6 +2,7 @@
 import { Icon } from '@iconify/vue'
 import { RouterLink } from 'vue-router'
 import { getLocalStorageByItem, removeLocalStorageByItem } from '@/constants/utils'
+import { UserFilled } from '@element-plus/icons-vue'
 
 const dataUser = getLocalStorageByItem('USER_LOGIN')
 </script>
@@ -18,7 +19,10 @@ const dataUser = getLocalStorageByItem('USER_LOGIN')
       <RouterLink class="createNew button" to="/createNew">Thêm mới đơn hàng</RouterLink>
     </div>
     <div class="account">
-      <div class="username">{{ dataUser.fullName }}</div>
+      <div style="display: flex; gap: 3px; ">
+        <div class="username">{{ dataUser.fullName }}</div>
+        <el-avatar :icon="UserFilled" :size="28"/>
+      </div>
       <RouterLink class="logout" to="/login" @click="removeLocalStorageByItem('USER_LOGIN')">
         <div>Logout</div>
         <Icon icon="uil:signout" />
@@ -127,7 +131,7 @@ const dataUser = getLocalStorageByItem('USER_LOGIN')
   color: black;
 }
 .account {
-  padding-right: 150px;
+  padding-right: 100px;
   .username {
     font-size: 18px;
   }

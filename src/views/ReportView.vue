@@ -28,24 +28,25 @@ const requestParams = ref({
 })
 
 const check = ref(0)
-
+const formDate = (date) => {
+  let year = date.getFullYear()
+  let month = date.getMonth() + 1
+  let day = date.getDate()
+  if (month < 10) {
+    month = '0' + month
+  }
+  if (day < 10) {
+    day = '0' + day
+  }
+  return year + '-' + month + '-' + day
+}
 const total = async (params) => {
   // Make an API request to download the file
   const response = await reportTotalAPI(params)
   if (response) {
     //file name
     let today = new Date()
-    let year = today.getFullYear()
-    let month = today.getMonth() + 1
-    let day = today.getDate()
-    if (month < 10) {
-      month = '0' + month
-    }
-    if (day < 10) {
-      day = '0' + day
-    }
-    let formattedDate = year + '' + month + '' + day
-    let filename = `ReportNumberOrder_${formattedDate}.xlsx`
+    let filename = `ReportNumberOrder_${formDate(today)}.xlsx`
     //download file
     const blob = new Blob([response])
     const link = document.createElement('a')
@@ -73,17 +74,7 @@ const efficiency = async (params) => {
   if (response) {
     //file name
     let today = new Date()
-    let year = today.getFullYear()
-    let month = today.getMonth() + 1
-    let day = today.getDate()
-    if (month < 10) {
-      month = '0' + month
-    }
-    if (day < 10) {
-      day = '0' + day
-    }
-    let formattedDate = year + '' + month + '' + day
-    let filename = `ReportEfficiency_${formattedDate}.xlsx`
+    let filename = `ReportEfficiency_${formDate(today)}.xlsx`
     //download file
     const blob = new Blob([response])
     const link = document.createElement('a')
@@ -116,21 +107,31 @@ const clickExport = async () => {
       content: 'Chưa có mã kho nào được chọn.',
       okText: 'OK'
     })
+  }else if(listChoice.value.length > 9){
+    openModal({
+      open: true,
+      type: MODAL_TYPE.ERROR,
+      title: 'Error',
+      content: 'Chỉ được chọn tối đa 9 kho hàng.',
+      okText: 'OK'
+    })
   } else {
     for (let i = 0; i < listChoice.value.length; i++) {
       requestParams.value.listWarehouseId[i] = listChoice.value[i].id
     }
-    if (!requestParams.value.endTime && !requestParams.value.startTime) {
+    if (!valueDate.value) {
       openModal({
         open: true,
         type: MODAL_TYPE.ERROR,
         title: 'Error',
-        content: 'Cần nhập ngày tháng xuất báo cáo.',
+        content: 'Cần chọn khoảng thời gian xuất báo cáo.',
         okText: 'OK'
       })
     } else {
-      const start = new Date(requestParams.value.startTime)
-      const end = new Date(requestParams.value.endTime)
+      requestParams.value.startTime = formDate(valueDate.value[0])
+      requestParams.value.endTime = formDate(valueDate.value[1])
+      const start = new Date(valueDate.value[0])
+      const end = new Date(valueDate.value[1])
       const timeDifference = end - start
       const time = Math.floor(timeDifference / (1000 * 60 * 60 * 24))
       if (time > 15) {
@@ -167,6 +168,7 @@ const clickExport = async () => {
     }
   }
 }
+const valueDate = ref([])
 </script>
 
 <template>
@@ -207,10 +209,16 @@ const clickExport = async () => {
           </tr>
         </table>
         <div class="filter">
-          <div style="display: flex; align-items: center; gap: 10px">
-            <input type="date" class="date" v-model="requestParams.startTime" />
-            <div>đến</div>
-            <input type="date" class="date" v-model="requestParams.endTime" />
+          <div class="datetime">
+            <el-date-picker
+              v-model="valueDate"
+              style="border-radius: 10px;"
+              type="daterange"
+              range-separator="To"
+              start-placeholder="Start date"
+              end-placeholder="End date"
+              size="default"
+            />
           </div>
           <div>
             <button class="red button" @click="click(true)">Chọn kho</button>
@@ -310,10 +318,6 @@ const clickExport = async () => {
   vertical-align: inherit;
   align-items: center;
 }
-.choice {
-  display: flex;
-  flex-direction: column;
-}
 .filter {
   border-radius: 14px;
   border: 2px solid black;
@@ -324,14 +328,11 @@ const clickExport = async () => {
   align-items: center;
   flex-direction: column;
   background-color: rgba(207, 207, 207, 0.9);
-  .date {
-    margin: 40px 0 40px 0;
-    height: 30px;
-    padding: 5px;
-    border-radius: 15px;
-    width: 120px;
-    cursor: pointer;
-    background-color: rgb(240, 240, 240);
+  .datetime{
+    margin: 37px 0 38px 0;
+    flex-wrap: wrap;
+    border-radius: 10px;
+    border: 2px solid black;
   }
 }
 .button {

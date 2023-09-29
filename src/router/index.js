@@ -5,6 +5,7 @@ import ManageView from '@/views/ManageView.vue'
 import ReportView from '@/views/ReportView.vue'
 import CreateView from '@/views/CreateView.vue'
 import DetailOrder from '@/views/DetailOrder.vue'
+import CreateMultiOrderView from '@/views/CreateMultiOrderView.vue'
 import { getLocalStorageByItem } from '@/constants/utils'
 
 const router = createRouter({
@@ -13,41 +14,52 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: HomeView,
+      meta: { title: 'HomePage' }, // Tiêu đề mặc định cho trang chủ
     },
     {
       path: '/management',
       name: 'management',
-      component: ManageView
+      component: ManageView,
+      meta: { title: 'Management Order' },
     },
     {
       path: '/report',
       name: 'report',
-      component: ReportView
+      component: ReportView,
+      meta: { title: 'Report Order' },
     },
     {
-      path: '/detailOrder',
+      path: '/management/detailOrder',
       name: 'detailOrder',
-      component: DetailOrder
+      component: DetailOrder,
+      meta: { title: 'Order Detail' },
     },
     {
       path: '/createNew',
       name: 'createNew',
-      component: CreateView
+      component: CreateView,
+      meta: { title: 'Create Order' },
+    },
+    {
+      path: '/createNew/multiOrder',
+      name: 'multiOrder',
+      component: CreateMultiOrderView,
+      meta: { title: 'Create Multi Order' },
     },
     {
       path: '/login',
       name: 'login',
       component: FormView,
       props: { isLoginScreen: true },
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: true, title: 'Login' },
     },
     {
       path: '/register',
       name: 'register',
       component: FormView,
       props: { isLoginScreen: false },
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: true, title: 'Register' }
     }
   ]
 })
@@ -59,4 +71,8 @@ router.beforeEach((to, from, next) => {
   }
   next()
 })
+router.beforeEach((to) => {
+  document.title = to.meta.title
+})
+
 export default router

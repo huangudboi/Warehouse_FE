@@ -81,7 +81,7 @@ const validatePhone1 = () => {
   }
   formError.value.phoneSender = errorPhone
 }
-// Hàm validate address Receiver
+// Hàm validate address Sender
 const validateAdr1 = () => {
   const address1 = formData.value.addressSender
   let errorAdr = ''
@@ -92,7 +92,7 @@ const validateAdr1 = () => {
   }
   formError.value.addressSender = errorAdr
 }
-// Hàm validate email Receiver
+// Hàm validate email Sender
 const validateEmail1 = () => {
   const email1 = formData.value.emailSender
   let errorEmail = ''
@@ -204,7 +204,7 @@ const handleValidate = () => {
   })
 }
 
-// Hàm checkLogin
+// Hàm checkForm
 const checkCreate = () => {
   handleValidate() // chạy hàm validate trước khi submit form
   let isValidated = true
@@ -215,6 +215,23 @@ const checkCreate = () => {
   })
   if (isValidated) {
     submit(formData)
+    formData.value.nameSender = '',
+    formData.value.phoneSender = '',
+    formData.value.addressSender = '',
+    formData.value.emailSender = '',
+    formData.value.nameReceiver = '',
+    formData.value.phoneReceiver = '',
+    formData.value.addressReceiver = '',
+    formData.value.emailReceiver = '',
+    formData.value.longitude = '',
+    formData.value.latitude = ''
+    openModal ({
+      open: true,
+      type: MODAL_TYPE.SUCCESS,
+      title: 'Success',
+      content: 'Thêm mới đơn hàng thành công.',
+      okText: 'OK'
+    })
   } else {
     openModal({
       open: true,
@@ -225,6 +242,7 @@ const checkCreate = () => {
     })
   }
 }
+
 </script>
 
 <template>
@@ -233,10 +251,7 @@ const checkCreate = () => {
       <Icon icon="bi-box-arrow-left" />
       <div>Quay lại trang chủ</div>
     </RouterLink>
-    <button class="exel">
-      <div>Tải file lên để thêm mới</div>
-      <Icon icon="material-symbols:upload" width="20" height="20" />
-    </button>
+    <RouterLink class="multiOrder btn" to="/createNew/multiOrder">Tạo mới nhiều đơn hàng</RouterLink>
   </div>
   <div class="title">Thêm mới đơn hàng</div>
   <div class="information">
@@ -429,7 +444,7 @@ const checkCreate = () => {
 .name {
   font-size: 35px;
   font-weight: bold;
-  color: orange;
+  color: #52b94e;
   margin-bottom: 10px;
 }
 .information {
@@ -453,10 +468,10 @@ const checkCreate = () => {
   font-size: 20px;
   margin-top: 35px;
   font-weight: bold;
-  background-color: orange;
+  background-color: #3cd677;
 }
 .button > button:hover {
-  background-color: rgb(188, 143, 51);
+  background-color: #587957;
 }
 .button {
   display: flex;
@@ -494,22 +509,18 @@ const checkCreate = () => {
   top: 100%;
   position: absolute;
 }
-
-.exel {
-  color: white;
+.btn {
   cursor: pointer;
-  font-weight: 700;
-  font-size: 10pt;
-  border-width: 1px;
+  border-radius: 20px;
+  padding: 7px 10px 7px 10px;
+  margin-right: 20px;
   background-color: rgb(197, 142, 40);
-  border-radius: 3px;
-  padding: 8px 10px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  margin-right: 25px;
+  color: white;
+  text-decoration: none;
+  border: 2px solid black;
+  font-size: 14px;
 }
-.exel:hover {
+.btn:hover {
   background-color: rgb(85, 56, 2);
 }
 </style>
