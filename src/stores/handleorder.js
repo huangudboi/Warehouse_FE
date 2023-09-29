@@ -15,31 +15,15 @@ const defaultState = {
 export const useOrderStore = defineStore('neworder', () => {
     const listDataOrder = ref({ ...defaultState })
     const addnew = async (params) => {
-        const {openModal} = useModalStore()
         const response = await addNewAPI(params)
         if (response?.success||response.status===1) {
             listDataOrder.value = { ...listDataOrder.value, ...response.data }
-            openModal ({
-                open: true,
-                type: MODAL_TYPE.SUCCESS,
-                title: 'Success',
-                content: 'Thêm mới đơn hàng thành công.',
-                okText: 'OK'
-            })
             return response
         }
         return null
     }
     const deleteOrder = async (params) => {
-        const {openModal} = useModalStore()
         const response = await deleteOrderAPI(params)
-        openModal ({
-            open: true,
-            type: MODAL_TYPE.SUCCESS,
-            title: 'Success',
-            content: `Xóa đơn hàng mã:${params} thành công.`,
-            okText: 'OK'
-        })
         return response
     }
     const changeOrder = async (params) => {

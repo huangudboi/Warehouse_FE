@@ -47,10 +47,17 @@ const searchData = async () => {
 }
 searchData()
 
-const deteleData = (oderCode) => {
-  deleteOrder(oderCode)
-  datasRender.value = datasRender.value.filter((data) => data.orderCode !== oderCode)
-  datas.value = datas.value.filter((data) => data.orderCode !== oderCode)
+const deteleData = (orderCode) => {
+  deleteOrder(orderCode)
+  openModal ({
+    open: true,
+    type: MODAL_TYPE.SUCCESS,
+    title: 'Success',
+    content: `Xóa đơn hàng mã:${orderCode} thành công.`,
+    okText: 'OK'
+  })
+  datasRender.value = datasRender.value.filter((data) => data.orderCode !== orderCode)
+  datas.value = datas.value.filter((data) => data.orderCode !== orderCode)
 }
 
 const formDate = (date) => {
@@ -171,6 +178,33 @@ const clickExport = async () => {
     }
   })
 }
+
+const deleteListOrder = () => {
+  listExport.value = datasRender.value.filter(item => item.checked)
+  let count = listExport.value.length
+  if(count === 0){
+    openModal({
+      open: true,
+      type: MODAL_TYPE.ERROR,
+      title: 'Error',
+      content: `Chưa có đơn hàng nào được chọn.`,
+      okText: 'OK'
+    })
+  }else{
+    listExport.value.forEach((order) => {
+      deleteOrder(order.orderCode)
+      datasRender.value = datasRender.value.filter((data) => data.orderCode !== order.orderCode)
+      datas.value = datas.value.filter((data) => data.orderCode !== order.orderCode)
+    })
+    openModal({
+      open: true,
+      type: MODAL_TYPE.SUCCESS,
+      title: 'Success',
+      content: `Xóa ${count} đơn hàng thành công.`,
+      okText: 'OK'
+    })
+  }
+}
 </script>
 
 <template>
@@ -182,7 +216,7 @@ const clickExport = async () => {
     <div>
       <button class="btn" @click="clickExport()">Xuất mã đơn hàng</button>
       <button class="btn">Điều phối đơn hàng</button>
-      <button class="btn">Xóa các đơn hàng đã chọn</button>
+      <button class="btn" @click="deleteListOrder()">Xóa các đơn hàng đã chọn</button>
     </div>
   </div>
   <div class="title">Quản lí đơn hàng</div>
@@ -249,7 +283,7 @@ const clickExport = async () => {
           <td class="data">{{ data.recipientName }}</td>
           <td class="data">{{ data.recipientPhone }}</td>
           <td class="data">
-            <RouterLink class="btn_show detailOrder" to="/detailOrder" @click="detail(data.orderCode)"
+            <RouterLink class="btn_show detailOrder" to="/management/detailOrder" @click="detail(data.orderCode)"
               >Chi tiết</RouterLink
             >
             <button id="data.orderCode" class="btn_delete" @click="deteleData(data.orderCode)">
